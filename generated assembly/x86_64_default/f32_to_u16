@@ -1,0 +1,7 @@
+fast_float_to_integer::f32_to_u16:
+	xorps xmm1, xmm1
+	maxss xmm1, xmm0
+	movss xmm0, dword ptr [rip + .L_0]
+	minss xmm0, xmm1
+	cvttss2si eax, xmm0
+	ret

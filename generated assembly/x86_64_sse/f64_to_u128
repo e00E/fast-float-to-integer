@@ -1,0 +1,16 @@
+fast_float_to_integer::f64_to_u128:
+	push rax
+	movsd qword ptr [rsp], xmm0
+	call qword ptr [rip + __fixunsdfti@GOTPCREL]
+	xor ecx, ecx
+	xorpd xmm0, xmm0
+	movsd xmm1, qword ptr [rsp]
+	ucomisd xmm1, xmm0
+	cmovb rdx, rcx
+	cmovb rax, rcx
+	ucomisd xmm1, qword ptr [rip + .L_0]
+	mov rcx, -1
+	cmova rax, rcx
+	cmova rdx, rcx
+	pop rcx
+	ret

@@ -1,0 +1,20 @@
+fast_float_to_integer::f32_to_i128:
+	push rax
+	movss dword ptr [rsp + 4], xmm0
+	call qword ptr [rip + __fixsfti@GOTPCREL]
+	xor ecx, ecx
+	movss xmm0, dword ptr [rsp + 4]
+	ucomiss xmm0, dword ptr [rip + .L_0]
+	cmovb rax, rcx
+	movabs rsi, -9223372036854775808
+	cmovb rdx, rsi
+	ucomiss xmm0, dword ptr [rip + .L_1]
+	movabs rsi, 9223372036854775807
+	cmova rdx, rsi
+	mov rsi, -1
+	cmova rax, rsi
+	ucomiss xmm0, xmm0
+	cmovp rax, rcx
+	cmovp rdx, rcx
+	pop rcx
+	ret

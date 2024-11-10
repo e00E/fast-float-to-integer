@@ -1,0 +1,15 @@
+fast_float_to_integer::f32_to_u32:
+	movss xmm0, dword ptr [esp + 4]
+	call .L_0$pb
+.L_0$pb:
+	pop eax
+.L_1:
+	add eax, offset _GLOBAL_OFFSET_TABLE_+(.L_1-.L_0$pb)
+	cvttss2si ecx, xmm0
+	addss xmm0, dword ptr [eax + .L_2@GOTOFF]
+	mov eax, ecx
+	sar eax, 31
+	cvttss2si edx, xmm0
+	and eax, edx
+	or eax, ecx
+	ret

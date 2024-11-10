@@ -1,0 +1,9 @@
+[alias]
+xtask = "run --package xtask --"
+
+[profile.show-asm]
+inherits = "release"
+# more determinism
+codegen-units=1
+# Values other than "thin" and "fat" cause the assembly to change in an undesirable way. It makes functions that have the same assembly link to eachother via ".set".
+lto = "thin"

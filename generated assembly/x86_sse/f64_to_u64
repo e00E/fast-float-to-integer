@@ -1,0 +1,43 @@
+fast_float_to_integer::f64_to_u64:
+	push ebx
+	sub esp, 16
+	call .L_0$pb
+.L_0$pb:
+	pop ecx
+	movsd xmm0, qword ptr [esp + 24]
+	xorpd xmm1, xmm1
+.L_1:
+	add ecx, offset _GLOBAL_OFFSET_TABLE_+(.L_1-.L_0$pb)
+	movsd xmm2, qword ptr [ecx + .L_2@GOTOFF]
+	ucomisd xmm2, xmm0
+	jbe .L_3
+	xorpd xmm2, xmm2
+.L_3:
+	movapd xmm3, xmm0
+	setbe bl
+	xor edx, edx
+	subsd xmm3, xmm2
+	movsd qword ptr [esp + 8], xmm3
+	fld qword ptr [esp + 8]
+	fnstcw word ptr [esp + 4]
+	movzx eax, word ptr [esp + 4]
+	or eax, 3072
+	ucomisd xmm0, xmm1
+	mov word ptr [esp + 6], ax
+	mov eax, 0
+	fldcw word ptr [esp + 6]
+	fistp qword ptr [esp + 8]
+	fldcw word ptr [esp + 4]
+	jb .L_4
+	movzx edx, bl
+	mov eax, dword ptr [esp + 8]
+	shl edx, 31
+	xor edx, dword ptr [esp + 12]
+.L_4:
+	ucomisd xmm0, qword ptr [ecx + .L_5@GOTOFF]
+	mov ecx, -1
+	cmova edx, ecx
+	cmova eax, ecx
+	add esp, 16
+	pop ebx
+	ret

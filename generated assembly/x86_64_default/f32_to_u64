@@ -1,0 +1,17 @@
+fast_float_to_integer::f32_to_u64:
+	cvttss2si rax, xmm0
+	mov rcx, rax
+	sar rcx, 63
+	movaps xmm1, xmm0
+	subss xmm1, dword ptr [rip + .L_0]
+	cvttss2si rdx, xmm1
+	and rdx, rcx
+	or rdx, rax
+	xor ecx, ecx
+	xorps xmm1, xmm1
+	ucomiss xmm0, xmm1
+	cmovae rcx, rdx
+	ucomiss xmm0, dword ptr [rip + .L_1]
+	mov rax, -1
+	cmovbe rax, rcx
+	ret

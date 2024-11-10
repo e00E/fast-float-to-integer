@@ -1,0 +1,9 @@
+fast_float_to_integer::f64_to_i64:
+	cvttsd2si rax, xmm0
+	ucomisd xmm0, qword ptr [rip + .L_0]
+	movabs rcx, 9223372036854775807
+	cmovbe rcx, rax
+	xor eax, eax
+	ucomisd xmm0, xmm0
+	cmovnp rax, rcx
+	ret

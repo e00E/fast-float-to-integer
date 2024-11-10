@@ -1,0 +1,14 @@
+# This crate contains benchmarks. The benchmarks are not in the main library crate because then carge forces us to compile criterion when compiling tests, which fails on some targets.
+
+[package]
+name = "benchmark"
+version = "0.1.0"
+edition = "2021"
+
+[dev-dependencies]
+criterion = { version = "0.5", default-features = false, features = [ "cargo_bench_support" ] }
+fast-float-to-integer = { path = "..", features=["force-default"] }
+
+[[bench]]
+name = "benchmark"
+harness = false

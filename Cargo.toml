@@ -1,0 +1,29 @@
+[workspace]
+members = [
+    "benchmark",
+    "xtask",
+]
+
+[package]
+name = "fast-float-to-integer"
+version = "0.1.0"
+authors = [ "Valentin Kettner <vakevk@gmail.com>" ]
+edition = "2021"
+rust-version = "1.71"
+description = "Convert floating point values to integer types faster than the standard `as` operator."
+repository = "https://github.com/e00E/fast-float-to-integer"
+license = "MPL-2.0"
+keywords = [ "float", "floating", "integer", "conversion", "convert" ]
+include = [ "/src" ]
+
+[dependencies]
+cfg-if = "1.0"
+
+[dev-dependencies]
+float_next_after = "1.0"
+
+[features]
+# This feature is for internal use. It ensures cargo-show-asm can get the assembly.
+show-asm = [  ]
+# This feature is for internal use. It disables all target specific code.
+force-default = [  ]

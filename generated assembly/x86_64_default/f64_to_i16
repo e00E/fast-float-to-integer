@@ -1,0 +1,7 @@
+fast_float_to_integer::f64_to_i16:
+	movsd xmm1, qword ptr [rip + .L_0]
+	maxsd xmm1, xmm0
+	movsd xmm0, qword ptr [rip + .L_1]
+	minsd xmm0, xmm1
+	cvttsd2si eax, xmm0
+	ret

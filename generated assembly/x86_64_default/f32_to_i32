@@ -1,0 +1,9 @@
+fast_float_to_integer::f32_to_i32:
+	cvttss2si eax, xmm0
+	ucomiss xmm0, dword ptr [rip + .L_0]
+	mov ecx, 2147483647
+	cmovbe ecx, eax
+	xor eax, eax
+	ucomiss xmm0, xmm0
+	cmovnp eax, ecx
+	ret

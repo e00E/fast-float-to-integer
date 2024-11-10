@@ -1,0 +1,9 @@
+fast_float_to_integer::f64_to_u64:
+	cvttsd2si rcx, xmm0
+	addsd xmm0, qword ptr [rip + .L_0]
+	cvttsd2si rdx, xmm0
+	mov rax, rcx
+	sar rax, 63
+	and rax, rdx
+	or rax, rcx
+	ret

@@ -1,0 +1,3 @@
+fast_float_to_integer::f64_to_u32:
+	cvttsd2si rax, xmm0
+	ret

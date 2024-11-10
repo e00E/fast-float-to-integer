@@ -1,0 +1,7 @@
+fast_float_to_integer::f32_to_i16:
+	movss xmm1, dword ptr [rip + .L_0]
+	maxss xmm1, xmm0
+	movss xmm0, dword ptr [rip + .L_1]
+	minss xmm0, xmm1
+	cvttss2si eax, xmm0
+	ret

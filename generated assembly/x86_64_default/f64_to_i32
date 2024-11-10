@@ -1,0 +1,8 @@
+fast_float_to_integer::f64_to_i32:
+	xor eax, eax
+	ucomisd xmm0, xmm0
+	maxsd xmm0, qword ptr [rip + .L_0]
+	minsd xmm0, qword ptr [rip + .L_1]
+	cvttsd2si ecx, xmm0
+	cmovnp eax, ecx
+	ret

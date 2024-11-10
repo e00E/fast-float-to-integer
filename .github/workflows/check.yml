@@ -1,0 +1,50 @@
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  # We intentionally hardcode the stable/current version for the following reasons:
+  #
+  # - It makes it less likely that CI starts failing in the future despite the project not changing.
+  # - It makes us independent of the default Rust version that the Github runner comes with.
+  check_stable:
+    runs-on: ubuntu-24.04
+    steps:
+    - run: sudo apt-get -qq install gcc-multilib qemu-user
+    - run: |
+        rustup --quiet toolchain uninstall stable
+        rustup --quiet toolchain install 1.82 --profile=default
+        rustup --quiet default 1.82
+    - run: cargo install --quiet cargo-show-asm
+    - uses: actions/checkout@v4
+    - run: cargo fmt --check
+    - run: cargo fetch --quiet --locked
+    - run: cargo clippy --quiet --workspace --all-targets -- --D=warnings
+    - run: cargo test --quiet --workspace
+    - run: cargo build --quiet --package xtask
+    - run: target/debug/xtask all
+    - name: Detect changes in generated assembly
+      run: |
+        if git status --porcelain -- "generated assembly" | grep ^; then
+          git diff -- "generated assembly"
+          echo Generated assembly has changed but the changes were not committed.
+          exit 1
+        fi
+
+  # For the MSRV we only care about the code compiling.
+  check_minimum_supported_rust_version:
+    runs-on: ubuntu-24.04
+    steps:
+    - run: sudo apt-get -qq install gcc-multilib
+    - run: |
+        rustup --quiet toolchain uninstall stable
+        rustup --quiet toolchain install 1.82 --profile=default
+        rustup --quiet toolchain install 1.71 --profile=minimal
+        rustup --quiet default 1.71
+    - uses: actions/checkout@v4
+    - run: cargo fetch --quiet --locked
+    # xtask does not use MSRV because we don't publish it. xtask's internal cargo calls use the default rustup pipeline, which is the MSRV. Note that we cannot run xtask through cargo because that forces the toolchain version for building xtask to be the same as the toolchain version for xtask's internal cargo calls through the RUSTUP_TOOLCHAIN environment variable.
+    - run: cargo +1.82 build --quiet --package xtask
+    - run: target/debug/xtask check

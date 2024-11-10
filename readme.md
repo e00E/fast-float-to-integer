@@ -15,6 +15,7 @@ CI enforces that all targets compile, pass tests, and that the generated assembl
 - Update the changelog.
 - Update the version in Cargo.toml.
 - Create a git tag for the version.
+- Publish to crates.io.
 
 # Improvements
 

@@ -13,12 +13,18 @@
 //!
 //! You never get undefined behavior but you can get unspecified behavior. In the unspecified case, you get an arbitrary value. The function returns and you get a valid value of the output type, but there is no guarantee what that value is.
 //!
+//! # Targets
+//!
 //! This crate picks an implementation automatically at compile time based on the [target](https://doc.rust-lang.org/reference/conditional-compilation.html#target_arch) and [features](https://doc.rust-lang.org/reference/attributes/codegen.html#the-target_feature-attribute). If there is no specialized implementation, then this crate picks the standard `as` operator conversion. This crate has optimized implementations on the following targets:
 //!
 //! - `target_arch = "x86_64", target_feature = "sse"`: all conversions except 128 bit integers
 //! - `target_arch = "x86", target_feature = "sse"`: all conversions except 64 bit and 128 bit integers
 //!
-//! # Assembly comparison
+//! # to_int_unchecked
+//!
+//! The functions in this crate are similar to the std's [`to_int_unchecked`](f32::to_int_unchecked). The difference is that `to_int_unchecked` is unsafe. You need to ensure the input is in range for the output before calling the function. This is similar to the C/C++ behavior. This crate on the other hand provides a safe function while compiling to the same assembly as the unsafe function.
+//!
+//! # Assembly
 //!
 //! The [repository](https://github.com/e00E/fast-float-to-integer) contains generated assembly for every conversion and target. Here are some typical examples on x86_64+SSE.
 //!
